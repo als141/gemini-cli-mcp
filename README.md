@@ -1,136 +1,214 @@
-# Gemini CLI
+# Gemini CLI MCP Server
 
-[![Gemini CLI CI](https://github.com/google-gemini/gemini-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/google-gemini/gemini-cli/actions/workflows/ci.yml)
+A Model Context Protocol (MCP) server that exposes all Gemini CLI tools to MCP clients like Claude Code.
 
-![Gemini CLI Screenshot](./docs/assets/gemini-screenshot.png)
+## Overview
 
-This repository contains the Gemini CLI, a command-line AI workflow tool that connects to your
-tools, understands your code and accelerates your workflows.
+This project extends the Google Gemini CLI to function as an MCP server, making all 11 built-in Gemini CLI tools available to MCP clients. It provides a bridge between the powerful Gemini CLI toolset and the MCP ecosystem.
 
-With the Gemini CLI you can:
+## Features
 
-- Query and edit large codebases in and beyond Gemini's 1M token context window.
-- Generate new apps from PDFs or sketches, using Gemini's multimodal capabilities.
-- Automate operational tasks, like querying pull requests or handling complex rebases.
-- Use tools and MCP servers to connect new capabilities, including [media generation with Imagen,
-  Veo or Lyria](https://github.com/GoogleCloudPlatform/vertex-ai-creative-studio/tree/main/experiments/mcp-genmedia)
-- Ground your queries with the [Google Search](https://ai.google.dev/gemini-api/docs/grounding)
-  tool, built in to Gemini.
+### 🔧 Complete Tool Suite
+- **File Operations**: Read, write, edit files (supports text, images, PDFs)
+- **File System**: Directory listing, glob search, content search
+- **Shell Integration**: Execute system commands
+- **Web Capabilities**: Fetch URLs, Google Search via Gemini API
+- **Memory Management**: Long-term information storage
 
-## Quickstart
+### 🔌 MCP Integration
+- **Claude Code**: Native integration with Claude Code
+- **Claude Desktop**: Compatible with Claude Desktop
+- **Standard MCP**: Works with any MCP-compatible client
+- **Stdio Transport**: Uses standard input/output for communication
 
-1. **Prerequisites:** Ensure you have [Node.js version 18](https://nodejs.org/en/download) or higher installed.
-2. **Run the CLI:** Execute the following command in your terminal:
+## Quick Start
 
-   ```bash
-   npx https://github.com/google-gemini/gemini-cli
-   ```
+### Installation
 
-   Or install it with:
-
-   ```bash
-   npm install -g @google/gemini-cli
-   gemini
-   ```
-
-3. **Pick a color theme**
-4. **Authenticate:** When prompted, sign in with your personal Google account. This will grant you up to 60 model requests per minute and 1,000 model requests per day using Gemini.
-
-You are now ready to use the Gemini CLI!
-
-### For advanced use or increased limits:
-
-If you need to use a specific model or require a higher request capacity, you can use an API key:
-
-1. Generate a key from [Google AI Studio](https://aistudio.google.com/apikey).
-2. Set it as an environment variable in your terminal. Replace `YOUR_API_KEY` with your generated key.
-
-   ```bash
-   export GEMINI_API_KEY="YOUR_API_KEY"
-   ```
-
-For other authentication methods, including Google Workspace accounts, see the [authentication](./docs/cli/authentication.md) guide.
-
-## Examples
-
-Once the CLI is running, you can start interacting with Gemini from your shell.
-
-You can start a project from a new directory:
-
-```sh
-cd new-project/
-gemini
-> Write me a Gemini Discord bot that answers questions using a FAQ.md file I will provide
+```bash
+npm install -g gemini-cli-mcp
 ```
 
-Or work with an existing project:
+### Setup with Claude Code
 
-```sh
-git clone https://github.com/google-gemini/gemini-cli
-cd gemini-cli
-gemini
-> Give me a summary of all of the changes that went in yesterday
+```bash
+# Add to Claude Code (recommended)
+claude mcp add gemini-cli -s user -c "gemini-mcp --serve-mcp"
+
+# With API key
+claude mcp add gemini-cli -s user -e GEMINI_API_KEY=your-key -c "gemini-mcp --serve-mcp"
 ```
 
-### Next steps
+### Authentication
 
-- Learn how to [contribute to or build from the source](./CONTRIBUTING.md).
-- Explore the available **[CLI Commands](./docs/cli/commands.md)**.
-- If you encounter any issues, review the **[Troubleshooting guide](./docs/troubleshooting.md)**.
-- For more comprehensive documentation, see the [full documentation](./docs/index.md).
-- Take a look at some [popular tasks](#popular-tasks) for more inspiration.
+#### Google Account (Recommended)
+```bash
+# Initial setup
+gemini-mcp --prompt "test" --yolo
 
-### Troubleshooting
-
-Head over to the [troubleshooting](docs/troubleshooting.md) guide if you're
-having issues.
-
-## Popular tasks
-
-### Explore a new codebase
-
-Start by `cd`ing into an existing or newly-cloned repository and running `gemini`.
-
-```text
-> Describe the main pieces of this system's architecture.
+# Start MCP server
+gemini-mcp --serve-mcp
 ```
 
-```text
-> What security mechanisms are in place?
+#### API Key
+```bash
+export GEMINI_API_KEY="your-api-key"
+gemini-mcp --serve-mcp
 ```
 
-### Work with your existing code
+## Available Tools
 
-```text
-> Implement a first draft for GitHub issue #123.
+All tools are exposed with `gemini_` prefix:
+
+| Tool | Description |
+|------|-------------|
+| `gemini_read_file` | Read file content (text, images, PDFs) |
+| `gemini_read_many_files` | Read multiple files with glob patterns |
+| `gemini_write_file` | Write content to files |
+| `gemini_replace` | Precise text replacement in files |
+| `gemini_list_directory` | List directory contents |
+| `gemini_glob` | Find files using glob patterns |
+| `gemini_search_file_content` | Search file contents with regex |
+| `gemini_run_shell_command` | Execute shell commands |
+| `gemini_web_fetch` | Fetch web content |
+| `gemini_google_web_search` | Google Search via Gemini API |
+| `gemini_save_memory` | Save to long-term memory |
+
+## Configuration Examples
+
+### Claude Code
+```bash
+# User scope (recommended)
+claude mcp add gemini-cli -s user -c "gemini-mcp --serve-mcp"
+
+# Project scope
+claude mcp add gemini-cli -s project -c "gemini-mcp --serve-mcp"
+
+# With environment variables
+claude mcp add gemini-cli -s user -e GEMINI_API_KEY=your-key -c "gemini-mcp --serve-mcp"
 ```
 
-```text
-> Help me migrate this codebase to the latest version of Java. Start with a plan.
+### Claude Desktop
+Add to `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "gemini-cli": {
+      "command": "gemini-mcp",
+      "args": ["--serve-mcp"],
+      "env": {
+        "GEMINI_API_KEY": "your-api-key-here"
+      }
+    }
+  }
+}
 ```
 
-### Automate your workflows
+## Use Cases
 
-Use MCP servers to integrate your local system tools with your enterprise collaboration suite.
-
-```text
-> Make me a slide deck showing the git history from the last 7 days, grouped by feature and team member.
+### Code Analysis
+```
+> Use gemini_search_file_content to find all React components using hooks
+> Read the main configuration files and explain the project structure
 ```
 
-```text
-> Make a full-screen web app for a wall display to show our most interacted-with GitHub issues.
+### File Management
+```
+> List all TypeScript files in the src directory
+> Read multiple test files and summarize the testing strategy
 ```
 
-### Interact with your system
-
-```text
-> Convert all the images in this directory to png, and rename them to use dates from the exif data.
+### System Operations
+```
+> Run the test suite and show me the results
+> Check git status and recent commits
 ```
 
-```text
-> Organise my PDF invoices by month of expenditure.
+### Research & Web Search
+```
+> Search for the latest TypeScript best practices
+> Fetch documentation from the project's homepage
 ```
 
-## Terms of Service and Privacy Notice
+## Authentication Methods
 
-For details on the terms of service and privacy notice applicable to your use of Gemini CLI, see the [Terms of Service and Privacy Notice](./docs/tos-privacy.md).
+1. **Google Account** (Recommended): Interactive OAuth flow
+2. **API Key**: Direct Gemini API key usage
+3. **Vertex AI**: Google Cloud authentication
+
+## Troubleshooting
+
+### Installation Issues
+```bash
+npm uninstall -g gemini-cli-mcp
+npm install -g gemini-cli-mcp
+```
+
+### Authentication Problems
+```bash
+# Reset authentication
+rm -rf ~/.gemini/
+gemini-mcp --prompt "test" --yolo
+```
+
+### MCP Server Issues
+```bash
+# Test server directly
+gemini-mcp --serve-mcp
+
+# Check logs in Claude Code
+/mcp
+```
+
+## Documentation
+
+- **[Quick Start Guide](docs/QUICK_START.md)** - Get started quickly (Japanese)
+- **[Claude Code Setup](docs/CLAUDE_CODE_SETUP.md)** - Detailed Claude Code integration (Japanese)
+- **[Complete Usage Guide](docs/MCP_SERVER_USAGE.md)** - Comprehensive documentation (English)
+- **[日本語ガイド](docs/MCP_SERVER_USAGE_JA.md)** - Complete usage guide (Japanese)
+- **[Publishing Guide](docs/PUBLISH_GUIDE.md)** - For developers
+
+## Development
+
+### Building from Source
+```bash
+git clone https://github.com/als141/gemini-cli-mcp.git
+cd gemini-cli-mcp
+npm install
+npm run build
+npm install -g .
+```
+
+### Project Structure
+```
+packages/
+├── cli/                 # Main CLI package
+│   ├── src/commands/serve-mcp.ts  # MCP server implementation
+│   └── dist/           # Built files
+└── core/               # Core functionality
+    └── src/tools/      # Tool implementations
+```
+
+## Requirements
+
+- **Node.js**: 18.0.0 or higher
+- **Gemini API Key** or **Google Account** for authentication
+- **MCP Client**: Claude Code, Claude Desktop, or compatible client
+
+## License
+
+Apache License 2.0 - Same as the original Google Gemini CLI
+
+## Related Projects
+
+- [Google Gemini CLI](https://github.com/google-gemini/gemini-cli) - Original CLI tool
+- [Model Context Protocol](https://modelcontextprotocol.io/) - MCP specification
+- [Claude Code](https://claude.ai/code) - AI-powered development environment
+
+## Support
+
+For issues and questions:
+- Check the [troubleshooting guide](docs/MCP_SERVER_USAGE.md#troubleshooting)
+- Review the [documentation](docs/)
+- Open an issue on GitHub
