@@ -27,6 +27,8 @@ This project extends the Google Gemini CLI to function as an MCP server, making 
 
 ```bash
 npm install -g gemini-cli-mcp
+
+gemini-mcp
 ```
 
 ### Setup with Claude Code
@@ -34,27 +36,8 @@ npm install -g gemini-cli-mcp
 ```bash
 # Add to Claude Code (recommended)
 claude mcp add gemini-cli -s user gemini-mcp -- --serve-mcp
-
-# With API key
-claude mcp add gemini-cli -s user -e GEMINI_API_KEY=your-key gemini-mcp -- --serve-mcp
 ```
 
-### Authentication
-
-#### Google Account (Recommended)
-```bash
-# Initial setup
-gemini-mcp --prompt "test" --yolo
-
-# Start MCP server
-gemini-mcp --serve-mcp
-```
-
-#### API Key
-```bash
-export GEMINI_API_KEY="your-api-key"
-gemini-mcp --serve-mcp
-```
 
 ## Available Tools
 
