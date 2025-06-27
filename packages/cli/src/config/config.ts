@@ -53,6 +53,7 @@ interface CliArgs {
   telemetryTarget: string | undefined;
   telemetryOtlpEndpoint: string | undefined;
   telemetryLogPrompts: boolean | undefined;
+  'serve-mcp': boolean | undefined;
 }
 
 async function parseArguments(): Promise<CliArgs> {
@@ -126,6 +127,11 @@ async function parseArguments(): Promise<CliArgs> {
       alias: 'c',
       type: 'boolean',
       description: 'Enables checkpointing of file edits',
+      default: false,
+    })
+    .option('serve-mcp', {
+      type: 'boolean',
+      description: 'Start as MCP (Model Context Protocol) server',
       default: false,
     })
     .version(await getCliVersion()) // This will enable the --version flag based on package.json

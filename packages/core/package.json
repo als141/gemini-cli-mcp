@@ -1,8 +1,8 @@
 {
-  "name": "@google/gemini-cli-core",
-  "version": "0.1.5",
-  "description": "Gemini CLI Server",
-  "repository": "google-gemini/gemini-cli",
+  "name": "gemini-cli-mcp-core",
+  "version": "1.0.0",
+  "description": "Gemini CLI MCP Server Core",
+  "repository": "als141/gemini-cli-mcp",
   "type": "module",
   "main": "dist/index.js",
   "scripts": {

@@ -180,15 +180,16 @@ export class WebSearchTool extends BaseTool<
 
       return {
         llmContent: `Web search results for "${params.query}":\n\n${modifiedResponseText}`,
-        returnDisplay: `Search results for "${params.query}" returned.`,
+        returnDisplay: modifiedResponseText, // Return the full search results
         sources,
       };
     } catch (error: unknown) {
       const errorMessage = `Error during web search for query "${params.query}": ${getErrorMessage(error)}`;
-      console.error(errorMessage, error);
+      console.error('[WebSearchTool] Error:', errorMessage);
+      
       return {
         llmContent: `Error: ${errorMessage}`,
-        returnDisplay: `Error performing web search.`,
+        returnDisplay: `Error performing web search: ${errorMessage}`,
       };
     }
   }

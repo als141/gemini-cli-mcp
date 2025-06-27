@@ -1,12 +1,12 @@
 {
-  "name": "@google/gemini-cli",
-  "version": "0.1.5",
-  "description": "Gemini CLI",
-  "repository": "google-gemini/gemini-cli",
+  "name": "gemini-cli-mcp",
+  "version": "1.0.0",
+  "description": "Gemini CLI MCP Server",
+  "repository": "als141/gemini-cli-mcp",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "gemini": "dist/index.js"
+    "gemini-mcp": "dist/index.js"
   },
   "scripts": {
     "build": "node ../../scripts/build_package.js",
@@ -30,7 +30,7 @@
     "sandboxImageUri": "gemini-cli-sandbox"
   },
   "dependencies": {
-    "@google/gemini-cli-core": "*",
+    "gemini-cli-mcp-core": "*",
     "@types/update-notifier": "^6.0.8",
     "command-exists": "^1.2.9",
     "diff": "^7.0.0",

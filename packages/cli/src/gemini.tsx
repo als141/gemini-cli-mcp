@@ -85,6 +85,14 @@ export async function main() {
   const workspaceRoot = process.cwd();
   const settings = loadSettings(workspaceRoot);
 
+  // Check if we should start as MCP server
+  if (process.argv.includes('--serve-mcp')) {
+    const { GeminiCliMcpServer } = await import('./commands/serve-mcp.js');
+    const server = new GeminiCliMcpServer();
+    await server.start();
+    return;
+  }
+
   await cleanupCheckpoints();
   if (settings.errors.length > 0) {
     for (const error of settings.errors) {
