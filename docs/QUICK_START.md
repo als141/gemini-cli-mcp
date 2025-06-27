@@ -23,10 +23,10 @@ gemini-mcp --prompt "Hello" --yolo
 
 ```bash
 # Claude Codeに追加（推奨）
-claude mcp add gemini-cli -s user -c "gemini-mcp --serve-mcp"
+claude mcp add gemini-cli -s user gemini-mcp -- --serve-mcp
 
 # API キーを使用する場合
-claude mcp add gemini-cli -s user -e GEMINI_API_KEY=your-key -c "gemini-mcp --serve-mcp"
+claude mcp add gemini-cli -s user -e GEMINI_API_KEY=your-key gemini-mcp -- --serve-mcp
 ```
 
 ## Claude Desktop での設定（参考）

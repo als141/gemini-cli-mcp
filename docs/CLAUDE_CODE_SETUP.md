@@ -18,22 +18,22 @@ npm install -g gemini-cli-mcp
 
 #### 基本コマンド（現在のプロジェクトのみ）
 ```bash
-claude mcp add gemini-cli -c "gemini-mcp --serve-mcp"
+claude mcp add gemini-cli gemini-mcp -- --serve-mcp
 ```
 
 #### プロジェクト全体で共有する場合
 ```bash
-claude mcp add gemini-cli -s project -c "gemini-mcp --serve-mcp"
+claude mcp add gemini-cli -s project gemini-mcp -- --serve-mcp
 ```
 
 #### すべてのプロジェクトで使用する場合
 ```bash
-claude mcp add gemini-cli -s user -c "gemini-mcp --serve-mcp"
+claude mcp add gemini-cli -s user gemini-mcp -- --serve-mcp
 ```
 
 ### 3. API キーを使用する場合
 ```bash
-claude mcp add gemini-cli -s user -e GEMINI_API_KEY=your-api-key-here -c "gemini-mcp --serve-mcp"
+claude mcp add gemini-cli -s user -e GEMINI_API_KEY=your-api-key-here gemini-mcp -- --serve-mcp
 ```
 
 ### 4. 設定の確認
@@ -139,13 +139,13 @@ claude mcp remove gemini-cli
 claude mcp add gemini-cli -s user \
   -e GEMINI_API_KEY=your-api-key \
   -e GEMINI_MODEL=gemini-2.0-flash-exp \
-  -c "gemini-mcp --serve-mcp"
+  gemini-mcp -- --serve-mcp
 ```
 
 ### プロジェクト固有の設定
 ```bash
 # プロジェクトスコープで追加（.mcp.jsonに保存）
-claude mcp add gemini-cli -s project -c "gemini-mcp --serve-mcp"
+claude mcp add gemini-cli -s project gemini-mcp -- --serve-mcp
 ```
 
 生成される`.mcp.json`ファイル：

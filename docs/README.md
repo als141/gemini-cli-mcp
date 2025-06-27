@@ -25,10 +25,10 @@ npm install -g gemini-cli-mcp
 
 ```bash
 # Add to Claude Code
-claude mcp add gemini-cli -s user -c "gemini-mcp --serve-mcp"
+claude mcp add gemini-cli -s user gemini-mcp -- --serve-mcp
 
 # Or with API key
-claude mcp add gemini-cli -s user -e GEMINI_API_KEY=your-key -c "gemini-mcp --serve-mcp"
+claude mcp add gemini-cli -s user -e GEMINI_API_KEY=your-key gemini-mcp -- --serve-mcp
 ```
 
 ## Available Tools
